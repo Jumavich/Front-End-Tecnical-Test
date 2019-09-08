@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css');
 @import url('weather-icons/weather-icons.scss');
+@import url('font-awesome/fontawesome.scss');
 
 $background-color: #eee;
 $body-color: #fafafa;
@@ -115,14 +116,61 @@ header, footer, article, nav, aside {
       left: 35px;
   }
 }
-.weather-icon-today {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  top: 0;
-  float: right;
-  margin: 40px 40px 0 0;
+
+.weather-wrapper-horizontal {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+
+.weather-card-horizontal {
+  
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin:  20px 5px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0px 0px 25px 1px rgba(50, 50, 50, 0.1);
+  
+  h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight:300;
+      font-size:20px;
+      color: #b8b8b8;
+      bottom: 0;
+      left: 35px;
+      justify-self: center;
+      align-self: center;
+  }
+  
+  p {
+      position: absolute;
+      font-family: 'Montserrat', sans-serif;
+      font-weight:300;
+      font-size:14px;
+      color: lighten(#b8b8b8, 10%);
+      bottom: 0;
+      left: 35px;
+  }
+}
+
+.favorite-icon-today {
+  width: 20%;
+  height: 20%;
+}
+
+.weather-icon-today {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  align-self: center;
+}
+
 .weather-icon {
   position: relative;
   width: 50px;
@@ -131,7 +179,12 @@ header, footer, article, nav, aside {
   float: right;
   margin: 40px 40px 0 0;
 }
-
+.weather-icon-horizontal {
+  width: 50%;
+  height: 50%;
+  justify-self: center;
+  align-self: center;
+}
 //dropdown
 .custom-select {
   position: relative;
