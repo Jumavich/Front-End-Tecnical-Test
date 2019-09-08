@@ -1,0 +1,26 @@
+[
+    {
+        "name":"Birmingham",
+        "id" : "2364559"
+    },
+    {
+        "name":"Anchorage",
+        "id" : "2354490"
+    },
+    {
+        "name":"Mesa",
+        "id" : "2449808"
+    },
+    {
+        "name":"Phoenix",
+        "id" : "2471390"
+    },
+    {
+        "name":"Tucson",
+        "id" : "2508428"
+    },
+    {
+        "name":"Little Rock",
+        "id" : "2440351"
+    }
+]

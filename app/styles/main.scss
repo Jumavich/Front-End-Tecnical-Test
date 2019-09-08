@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css');
+@import url('weather-icons/weather-icons.scss');
+
+$background-color: #eee;
+$body-color: #fafafa;
+
+body {
+  display: flex;
+  max-height: 100vh;
+  flex-direction: row;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+.col-1 {
+  background: $body-color;
+  width: 20%;
+}
+.col-2 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.col-3 {
+  display: grid;
+  width: 80%;
+}
+.row-1 {
+  flex-direction: row;
+}
+.content {
+  display: flex;
+  flex-direction: row;
+}
+.content > article {
+  width: 100%;
+  min-height: 60vh;
+}
+
+header, footer {
+  background: $background-color;
+  height: 20vh;
+  text-align: center;
+}
+header, footer, article, nav, aside {
+  padding: 1em;
+}
+.container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;   
+  grid-template-rows: 100%;
+  height: 100%
+}
+
+.today-weather {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  margin:  5px auto;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  width: 50%;
+  height: 100%;
+  background-color: white;
+  box-shadow: 0px 0px 25px 1px rgba(50, 50, 50, 0.1);
+  p {
+    font-family: 'Montserrat', sans-serif;
+    color: lighten(#b8b8b8, 10%);
+    left: 35px;
+  }
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    color: #b8b8b8;
+    bottom: 0;
+    left: 35px;
+  }
+}
+// WEATHER CARDS
+.weather-wrapper {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.weather-card {
+  
+  margin:  20px 5px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  box-shadow: 0px 0px 25px 1px rgba(50, 50, 50, 0.1);
+  
+  h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight:300;
+      font-size:80px;
+      color: #b8b8b8;
+      bottom: 0;
+      left: 35px;
+  }
+  
+  p {
+      position: absolute;
+      font-family: 'Montserrat', sans-serif;
+      font-weight:300;
+      font-size:28px;
+      color: lighten(#b8b8b8, 10%);
+      bottom: 0;
+      left: 35px;
+  }
+}
+.weather-icon-today {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  top: 0;
+  float: right;
+  margin: 40px 40px 0 0;
+}
+.weather-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  top: 0;
+  float: right;
+  margin: 40px 40px 0 0;
+}
+
+//dropdown
+.custom-select {
+  position: relative;
+  display: flex;
+  max-width: 100%;
+  min-width: 180px;
+  margin: 20px 0px 20px 0px;
+  border: 1px solid $body-color;
+  background-color: $body-color;
+  margin: 10px;
+  z-index: 10;
+
+  select{
+    justify-content: space-around;
+    border: 1px solid $background-color;
+    outline: none;
+    background: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0px;
+    display: flex;
+    width: 100%;
+    padding: 12px 55px 15px 15px;
+    font-size: 14px;
+    option {
+      border: 1px solid $background-color;
+    } 
+    &:after{
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50px;
+      height: 100%;
+      line-height: 38px;
+      content: '\2228';
+      text-align: center;
+      font-size: 24px;
+      z-index: -1;
+    }    
+  }
+  button {
+    justify-content: space-around;
+    border: 1px solid $background-color;
+    outline: none;
+    background: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0px;
+    display: flex;
+    width: 100%;
+    padding: 12px 55px 15px 15px;
+    font-size: 14px;
+    option {
+      border: 1px solid $background-color;
+    } 
+    &:after{
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50px;
+      height: 100%;
+      line-height: 38px;
+      text-align: center;
+      font-size: 24px;
+      z-index: -1;
+    }    
+  }
+}
+
+.custom-select-container {
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.custom-container-2 {
+  display: grid;
+  background: $body-color;
+  height: 100%;  
+  grid-template-rows: 1fr 1fr;
+}
+
+.forecast {
+  display: flex;
+}
+
+.item {
+  width: 20%;
+  text-align: center;
+}
