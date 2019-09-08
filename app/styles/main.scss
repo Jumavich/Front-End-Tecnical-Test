@@ -23,7 +23,7 @@ body {
 }
 .col-3 {
   display: grid;
-  width: 80%;
+  grid-template-columns: 1fr 1fr;
 }
 .row-1 {
   flex-direction: row;
