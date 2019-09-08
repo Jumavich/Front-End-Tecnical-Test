@@ -1,41 +1,75 @@
 "use strict";
-// local storage to save favorite locations
+// global var to save favorite locations
 let myFavorites = []
+let currentCallback
+//Overrides alerts from javascript
+// override default browser alert
+window.alert = function(msg, callback){
+	let message = document.querySelector('.message')
+	message.textContent = msg
+	let custom_alert = document.querySelector('.customAlert')
+	custom_alert.style.animation = "fadeIn 0.3s linear"
+	custom_alert.style.display = "inline"
+	setTimeout(function(){
+		custom_alert.style.animation =  'none';
+	}, 300);
+	
+	currentCallback = callback;
+  }
+// Hanldles confirm button in the alert 
+document.addEventListener('click', function(event){
+	if (!event.target.matches('.confirmButton')) return;
+	let custom_alert = document.querySelector('.customAlert')
+	custom_alert.style.animation = "fadeOut 0.3s linear"
+	setTimeout(function(){
+		custom_alert.style.animation =  'none';
+		custom_alert.style.display =  'none';
+	}, 300);
+})
 // Handles Find location's weather click event
 document.addEventListener('click', function (event) {
+	
 	// If the clicked element doesn't have the right selector, bail
 	if (!event.target.matches('#styledSelect2')) return;
-	// Loads location's weather based on the input selected in the dropdown
+	// Loads location's weather based on the input selected in the dropdown	
 	let option = document.getElementById('styledSelect1').value;
 	let location = getLocation(option)
-
 }, false);
-//Handles Clear location's weather click event
+// Handles Clear location's weather click event
 document.getElementById('styledSelect3').addEventListener('click', function (event) {
 	// Clears current location's weather info
 	let option = document.querySelector('.custom-container-2');
 	option.innerHTML = "";
 }, false)
+// Handles Find location's weather click event
+document.addEventListener('click', function (event) {
+	// If the clicked element doesn't have the right selector, bail
+	if (!event.target.matches('.favorite-location')) return;
+	// Loads location's weather based on the input selected in the dropdown
+	console.log(event.target)
+	getLocation(event.target.closest(".weather-card-horizontal").id)
+
+}, false);
 // Handles favorite icon click event
 document.addEventListener('click', function (event) {
 
 	// If the clicked element doesn't have the right selector, bail
 	if (!event.target.matches('#favorite-icon-today')) return;
-
 	// Adds current location to the list of favorites only if the amount of favorites is less than 3
 	if(myFavorites.length < 3){
 		let location_id = document.getElementById('today-id').innerHTML
 		let location_name = document.getElementById('hidden-location').innerHTML
-		let flag = true
+		// flag to know if the locations exist in favorite locations
+		let exist = false
 		myFavorites.forEach(function(item){
 			if(item.id == location_id){
-				flag = false
+				exist = true
 				alert("Location already in favorites")
 				return;
 			}
 		});
 
-		if(flag){
+		if(!exist){
 			var location = {
 				"id":location_id,
 				"name":location_name
@@ -47,25 +81,21 @@ document.addEventListener('click', function (event) {
 	}else{
 		alert("Maximun number of locations reached")
 	}
-	
 
 }, false);
 // Handles remove icon click event
 document.addEventListener('click', function (event) {
 	
 	if (!event.target.matches('#remove-favorite')) return;
-
 	// Log the clicked element in the console
-	console.log(event.target.alt)
 	myFavorites.forEach(function(item,index){
-		if(item.id == event.target.alt){
+		if(item.id == event.target.closest(".weather-card-horizontal").id){
 			myFavorites.splice(index,1);
 			let closestParent = event.target.closest('.weather-wrapper-horizontal');
 			closestParent.parentNode.removeChild(closestParent)
 		}
 		
 	})
-	console.log("remove element")
 
 }, false);
 // Handles DOMContentLoaded event to fill location's list dynamically
@@ -77,11 +107,10 @@ document.addEventListener("DOMContentLoaded", function() {
 		response.forEach(element => {
 			daySelect.options[daySelect.options.length] = new Option(element.name, element.id);
 		}); 		
-	});
-	// create months array for better display
-	 
+	});	 
   });
 function getLocation(location_id) {
+	
 	let url = "https://www.metaweather.com/api/location/" + location_id
 	let test = this;
 	let xhr = new XMLHttpRequest();
@@ -103,6 +132,7 @@ function getLocation(location_id) {
 	xhr.open('GET', url);
 	xhr.send();
 }
+// LoadS dynamically the favorite locations
 function loadFavoritesLocation(){
 
 	myFavorites.forEach(function(item){
@@ -110,10 +140,9 @@ function loadFavoritesLocation(){
 			let div = document.createElement("div")
 			div.classList.add("weather-wrapper-horizontal");
 			div.innerHTML = `
-				<div class="weather-card-horizontal">					
-					<h1 id="` + item.name + `">` + item.name + `</h1>                        
-					<img class="weather-icon-horizontal" id="remove-favorite" src="https://image.flaticon.com/icons/svg/0/39.svg" alt="` + item.id + `">
-					</img>
+				<div class="weather-card-horizontal animated slideInRight" id="` + item.id + `">					
+					<h1 id="` + item.name + `" class="favorite-location">` + item.name + `</h1>                        
+					<img class="weather-icon-horizontal" id="remove-favorite" src="https://image.flaticon.com/icons/svg/0/39.svg" alt="remove icon">
 				</div>
 			`
 			// Get the reference node
@@ -123,49 +152,48 @@ function loadFavoritesLocation(){
 			referenceNode.after(div);
 		}		
 	})
-	// Create a new element
-	
 
 	
 }
+// Loads today weather and forecast
 function loadLocationWeather(location) {
 
 	let today_date = new Date(location.consolidated_weather[0].applicable_date)
 	let today_month = today_date.getMonth() + 1
 	let view = `
-	<div class="today-weather">
+	<div class="today-weather animated fadeIn">
 		<div>
 			<p id="today-id" hidden>`+ location.woeid +`</p>
 			<p id="hidden-location" hidden>` + location.title + `</p>
 			<p id="today-date">`+ today_month + `/` + today_date.getDate() +`</p>
 			<p id="location">` + location.parent.title + `, ` + location.title +`</p>
-			<h1 id="current-temperature">`+ parseInt(location.consolidated_weather[0].the_temp) + `<i class="wi wi-celsius"></i></h1>			
-			<div class="col-3">
+			<h1 id="`+ parseInt(location.consolidated_weather[0].the_temp) + `" class="current-temperature">`+ parseInt(location.consolidated_weather[0].the_temp) + `<i class="wi wi-celsius"></i></h1>			
+			<div class="col">
 				<p id="min-temperature">` + parseInt(location.consolidated_weather[0].min_temp) + `<i class="wi wi-celsius"></i></p>
 				<p id="max-temperature">` + parseInt(location.consolidated_weather[0].max_temp) + `<i class="wi wi-celsius"></i></p>
 			</div>
 			<p id="weather-state">` + location.consolidated_weather[0].weather_state_name + `</p>
-			<p>Precipitation: ` + parseInt(location.consolidated_weather[0].predictability) + `</p>
-			<p>Humidity: ` + parseInt(location.consolidated_weather[0].humidity) + `%</p>
-			<p id="wind-direction">Wind Direction: ` + location.consolidated_weather[0].wind_direction_compass + `</p>
+			<p><i class="fas fa-cloud-rain"></i>Precipitation: ` + parseInt(location.consolidated_weather[0].predictability) + `</p>
+			<p><i class="fas fa-tint"></i>Humidity: ` + parseInt(location.consolidated_weather[0].humidity) + `%</p>
+			<p id="wind-direction"><i class="fas fa-wind"></i>Wind Direction: ` + location.consolidated_weather[0].wind_direction_compass + ` </p>
 		</div>
-		<div style="display: flex;flex-direction: row-reverse;">                    
-			<img class="favorite-icon-today" id="favorite-icon-today" src="https://downloadfreesvgicons.com/icons/shape-icons/svg-red-heart-icon-1/svg-red-heart-icon-1.svg">
-			<img class="weather-icon-today" id="weather-state-icon" src="https://www.metaweather.com/static/img/weather/` + location.consolidated_weather[0].weather_state_abbr + `.svg">
+		<div class="row-reverse">                    
+			<img class="favorite-icon-today" id="favorite-icon-today" alt="favorite icon" src="https://downloadfreesvgicons.com/icons/shape-icons/svg-red-heart-icon-1/svg-red-heart-icon-1.svg">
+			<img class="weather-icon-today" id="weather-state-icon" alt="` + location.consolidated_weather[0].weather_state_name + `" src="https://www.metaweather.com/static/img/weather/` + location.consolidated_weather[0].weather_state_abbr + `.svg">
 		</div> 
 		
 	</div>
 	<div class="forecast">
-	`;
+	`
 
 	for(let i=1;i<location.consolidated_weather.length;i++){
 		let element_date = new Date(location.consolidated_weather[i].applicable_date)
 		let month = element_date.getMonth() + 1
 		view += `
-			<div class="item">
+			<div class="item animated bounceInUp">
 				<div class="weather-wrapper">
 					<div class="weather-card madrid">
-						<img class="weather-icon" id="weather-state-` + element_date.getDate() +`" src="https://www.metaweather.com/static/img/weather/png/64/`+ location.consolidated_weather[i].weather_state_abbr +`.png">
+						<img class="weather-icon" id="weather-state-` + element_date.getDate() +`" alt="` + location.consolidated_weather[i].weather_state_name + `" src="https://www.metaweather.com/static/img/weather/png/64/`+ location.consolidated_weather[i].weather_state_abbr +`.png">
 						<h1>`+ parseInt(location.consolidated_weather[i].the_temp) +`º</h1>
 						<p>`+ month + `/` + element_date.getDate() +`</p>
 					</div>
@@ -173,10 +201,20 @@ function loadLocationWeather(location) {
 			</div>
 		`
 	} 
-	view += `</div>`
 	let option = document.querySelector('.custom-container-2');
 	option.innerHTML = view;
+	let temperature = parseInt(document.querySelector('.current-temperature').id);
+
+	if (temperature > 23){
+		document.querySelector('.today-weather').classList.add('hot-weather')
+	}else if(temperature < 14){
+		document.querySelector('.today-weather').classList.add('cold-weather')
+	}else{
+		document.querySelector('.today-weather').classList.add('normal-weather')
+	}
+	
 }
+// Loads list of availables locations
 function loadLocationList(callback) {   
 
     let xobj = new XMLHttpRequest();

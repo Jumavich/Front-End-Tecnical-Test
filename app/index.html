@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>test1</title>
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <script src="https://kit.fontawesome.com/f9c3bef568.js"></script>
     
     <!-- Place favicon.ico in the root directory -->
     <!-- build:css styles/main.css -->
@@ -13,29 +14,29 @@
     <!-- endbuild -->
   </head>
   <body>
-    <!-- <nav class="col-1">
-      
-    </nav> -->
-    <div class="col-2">
     <header>
       <h1>Weather App</h1>
     </header>
     <main class="content">
+      <div class="customAlert">
+        <p class="message"></p>
+        <input type="button" class="confirmButton" value="Ok">
+      </div>
       <article>
         <div class="container">
             <div class="custom-select-container-1">
                 <label class="custom-select" for="styledSelect1">
-                  <select id="styledSelect1" name="options">
+                  <select id="styledSelect1" name="options" tabindex="0">
                     <option value="">
                       Select an option
                     </option>
                   </select>
                 </label>
                 <label class="custom-select" for="styledSelect2">
-                  <button id="styledSelect2">Find</button>
+                  <button id="styledSelect2" tabindex="0">Find</button>
                 </label>
                 <label class="custom-select" for="styledSelect3">
-                    <button id="styledSelect3">Clear</button>
+                    <button id="styledSelect3" tabindex="0">Clear</button>
                 </label>
                 <label id="favorite" class="custom-select" for="styledSelect4">
                     <button id="styledSelect4" disabled>Favorites</button>
@@ -48,7 +49,7 @@
       </article>
     </main>
     <footer>Juan Manuel Viales</footer>
-    </div>  
+  
     <script  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="scripts/main.js"></script>
   </body>
